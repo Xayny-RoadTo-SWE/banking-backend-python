@@ -1,0 +1,18 @@
+# Ignorar cache e arquivos temporários
+__pycache__/
+*.pyc
+
+# Ignorar ambiente virtual Python
+env/
+venv/
+
+# Ignorar credenciais e configs locais
+config.py
+.env
+
+# Ignorar bancos locais (caso crie SQLite para testes)
+*.db
+*.sqlite3
+
+# Ignorar arquivos do sistema
+.DS_Store
