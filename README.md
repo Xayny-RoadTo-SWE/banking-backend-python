@@ -20,11 +20,12 @@ A simple banking backend system built with **Python** and **MySQL**, designed to
 - PyMySQL
 - CLI-based interface
 
+## Notes
+This project was built for learning and demonstration purposes, focusing on backend logic rather than UI.
+
 ## How to Run
 
 1. Clone the repository
 ```bash
 git clone https://github.com/Alexsandra127/banking-backend-python.git
 cd banking-backend-python
-## Notes
-This project was built for learning and demonstration purposes, focusing on backend logic rather than UI.
