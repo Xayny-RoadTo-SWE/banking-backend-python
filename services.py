@@ -1,70 +1,23 @@
-import pymysql
-from pymysql import MySQLError
+
 import config
+import logging
+import logging_conf
+from repo import BankRepo
+from database import get_connection
 
 
-def get_connection():
-    try:
-        return pymysql.connect(
-            host=config.DB_HOST,
-            port=config.DB_PORT,
-            user=config.DB_USER,
-            password=config.DB_PASS,
-            database=config.DB_NAME,
-            autocommit=False
-        )
-    except MySQLError as e:
-        print("Erro ao conectar no MySQL:", e)
-        raise
+def create_user(nome: str):
+    BankRepo.create_user(nome)    
 
 
-def create_user(nome):
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
+def get_balance(user_id:str):
+    result = BankRepo.get_balance(user_id)
 
-        cursor.execute(
-            "INSERT INTO users (nome, saldo) VALUES (%s, %s)",
-            (nome, 0.00)
-        )
-
-        conn.commit()
-        print(f"Usuário '{nome}' criado com sucesso!")
-
-    except MySQLError as e:
-        print("Erro ao criar usuário:", e)
-        conn.rollback()
-
-    finally:
-        cursor.close()
-        conn.close()
-
-
-def get_balance(user_id):
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(
-            "SELECT saldo FROM users WHERE id = %s",
-            (user_id,)
-        )
-
-        result = cursor.fetchone()
-
-        if result is None:
-            print("Usuário não encontrado.")
-            return None
-
-        return result[0]
-
-    except MySQLError as e:
-        print("Erro ao consultar saldo:", e)
+    if result is None:
+        logging.error(f"Usuário {user_id} não encontrado.")
         return None
 
-    finally:
-        cursor.close()
-        conn.close()
+    return result[0]
 
 
 def deposit(user_id, amount):
@@ -77,7 +30,7 @@ def deposit(user_id, amount):
         cursor = conn.cursor()
 
         cursor.execute(
-            "UPDATE users SET saldo = saldo + %s WHERE id = %s",
+            "",
             (amount, user_id)
         )
 
@@ -125,7 +78,7 @@ def withdraw(user_id, amount):
             return
 
         cursor.execute(
-            "UPDATE users SET saldo = saldo - %s WHERE id = %s",
+            
             (amount, user_id)
         )
 
@@ -151,7 +104,7 @@ def transfer(from_user_id, to_user_id, amount):
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT saldo FROM users WHERE id = %s FOR UPDATE",
+            
             (from_user_id,)
         )
 
@@ -163,7 +116,7 @@ def transfer(from_user_id, to_user_id, amount):
             return
 
         cursor.execute(
-            "SELECT id FROM users WHERE id = %s",
+            
             (to_user_id,)
         )
 
@@ -173,7 +126,7 @@ def transfer(from_user_id, to_user_id, amount):
             return
 
         cursor.execute(
-            "UPDATE users SET saldo = saldo - %s WHERE id = %s",
+        
             (amount, from_user_id)
         )
 

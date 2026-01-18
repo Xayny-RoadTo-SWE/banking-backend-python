@@ -16,3 +16,8 @@ config.py
 
 # Ignorar arquivos do sistema
 .DS_Store
+
+miniconda.exe
+Pipfile
+Pipfile.lock
+scripts/
