@@ -50,9 +50,8 @@ class UserTasks:
         else:
             raise Exception(f"Unknown document type {document_type}")
 
-
     @classmethod
-    def validate_user(cls, user: UserCreateRequest ) -> None:
+    def validate_user(cls, user: UserCreateRequest) -> None:
         cls.__validate_roles(user.role)
         cls.__validate_document_type(user.document_type)
         cls.validate_document_number(user.document_type, user.document_number)
