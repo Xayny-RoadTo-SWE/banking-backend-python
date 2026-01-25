@@ -26,3 +26,14 @@ WITHDRAW_AMOUNT = """
     UPDATE users SET saldo = saldo - %s WHERE user_id = %s
 """
 
+CREATE_TRANSACTION = """
+INSERT INTO transactions (
+    account_id,
+    transaction_type,
+    amount
+) VALUES (
+    %s,
+    %s,
+    %s
+)
+"""
