@@ -7,47 +7,35 @@ Este arquivo será responsável por:
 - registrar corretamente cada movimentação no sistema
 """
 
-
-"""
-Regras de negócio relacionadas às TRANSAÇÕES bancárias.
-"""
-
 class TransactionServices:
 
     @staticmethod
     def deposit(account_id: int, amount: float):
+        """
+        Realiza um depósito em uma conta.
+        """
+        # TODO: validar valor
+        # TODO: atualizar saldo da conta
+        # TODO: registrar transação
         pass
 
-    """
-    Realiza um depósito em uma conta.
-    """
-    # TODO: validar valor
-    # TODO: atualizar saldo da conta
-    # TODO: registrar transação
-
-
-@staticmethod
+    @staticmethod
     def withdraw(account_id: int, amount: float):
+        """
+        Realiza um saque em uma conta.
+        """
+        # TODO: validar saldo disponível
+        # TODO: atualizar saldo da conta
+        # TODO: registrar transação
         pass
 
-    """
-    Realiza um saque em uma conta.
-    """
-    # TODO: validar saldo disponível
-    # TODO: atualizar saldo da conta
-    # TODO: registrar transação
-
-
-
-@staticmethod
+    @staticmethod
     def transfer(from_account_id: int, to_account_id: int, amount: float):
+        """
+        Realiza uma transferência entre contas.
+        """
+        # TODO: validar saldo
+        # TODO: debitar conta origem
+        # TODO: creditar conta destino
+        # TODO: registrar transação
         pass
-
-    """
-    Realiza uma transferência entre contas.
-    """
-    # TODO: validar saldo
-    # TODO: debitar conta origem
-    # TODO: creditar conta destino
-    # TODO: registrar transação
-
