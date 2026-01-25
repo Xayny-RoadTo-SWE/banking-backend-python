@@ -9,11 +9,6 @@ router = APIRouter(
     tags=["Customers"]
 )
 
-
-class CustomerCreate(BaseModel):
-    nome: str
-
-
 @router.post("/")
 def create_customer_endpoint(customer: CustomerCreate):
     logging.info(

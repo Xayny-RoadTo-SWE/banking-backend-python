@@ -11,20 +11,13 @@ Aqui ficarão endpoints para:
 """
 
 from fastapi import APIRouter
-from pydantic import BaseModel
-
+from models.account_models import AccountCreate
 from services.accounts_service import open_account, get_accounts_by_customer
 
 router = APIRouter(
     prefix="/accounts",
     tags=["Accounts"]
 )
-
-
-class AccountCreate(BaseModel):
-    customer_id: int
-    account_type: str
-
 
 @router.post("/")
 def open_account_endpoint(account: AccountCreate):
