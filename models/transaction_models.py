@@ -1,3 +1,5 @@
+from pydantic import BaseModel
+
 class DepositRequest(BaseModel):
     account_id: int
     amount: float
