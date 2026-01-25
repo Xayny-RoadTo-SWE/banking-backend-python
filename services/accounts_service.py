@@ -10,20 +10,27 @@ Este arquivo será responsável por:
 """
 Regras de negócio relacionadas às CONTAS BANCÁRIAS.
 """
+class AccountServices:
 
-def open_account(customer_id: int, account_type: str):
+
+@staticmethod
+def open_account(account):
+    pass
+
     """
     Abre uma nova conta bancária para um customer.
     """
     # TODO: verificar se customer existe
     # TODO: validar tipo de conta
     # TODO: criar conta com saldo inicial
+
+
+@staticmethod
+def get_accounts_by_customer(customer_id: int):
     pass
 
-
-def get_accounts_by_customer(customer_id: int):
     """
     Lista todas as contas de um customer.
     """
     # TODO: buscar contas associadas ao customer
-    pass
+

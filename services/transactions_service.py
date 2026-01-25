@@ -12,27 +12,37 @@ Este arquivo será responsável por:
 Regras de negócio relacionadas às TRANSAÇÕES bancárias.
 """
 
-def deposit(account_id: int, amount: float):
+class TransactionServices:
+
+    @staticmethod
+    def deposit(account_id: int, amount: float):
+        pass
+
     """
     Realiza um depósito em uma conta.
     """
     # TODO: validar valor
     # TODO: atualizar saldo da conta
     # TODO: registrar transação
-    pass
 
 
-def withdraw(account_id: int, amount: float):
+@staticmethod
+    def withdraw(account_id: int, amount: float):
+        pass
+
     """
     Realiza um saque em uma conta.
     """
     # TODO: validar saldo disponível
     # TODO: atualizar saldo da conta
     # TODO: registrar transação
-    pass
 
 
-def transfer(from_account_id: int, to_account_id: int, amount: float):
+
+@staticmethod
+    def transfer(from_account_id: int, to_account_id: int, amount: float):
+        pass
+
     """
     Realiza uma transferência entre contas.
     """
@@ -40,4 +50,4 @@ def transfer(from_account_id: int, to_account_id: int, amount: float):
     # TODO: debitar conta origem
     # TODO: creditar conta destino
     # TODO: registrar transação
-    pass
+
