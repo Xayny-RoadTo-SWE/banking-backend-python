@@ -1,16 +1,26 @@
+from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel
+from enum import Enum
 
-class DepositRequest(BaseModel):
-    account_id: int
+
+class TransactionType(str, Enum):
+    DEPOSIT = "deposit"
+    WITHDRAW = "withdraw"
+    TRANSFER = "transfer"
+
+
+class TransactionCreateRequest(BaseModel):
     amount: float
+    transaction_type: TransactionType
+    customer_origin_id: int
+    customer_destination_id: Optional[int] = None
 
 
-class WithdrawRequest(BaseModel):
-    account_id: int
+class TransactionResponse(BaseModel):
+    id: int
     amount: float
-
-
-class TransferRequest(BaseModel):
-    from_account_id: int
-    to_account_id: int
-    amount: float
+    transaction_type: TransactionType
+    customer_origin_id: int
+    customer_destination_id: Optional[int]
+    created_at: datetime
