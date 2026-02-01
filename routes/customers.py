@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import logging
 from fastapi import APIRouter, HTTPException
 from models.customer_models import CustomerCreate
