@@ -24,3 +24,9 @@ class TransactionResponse(BaseModel):
     customer_origin_id: int
     customer_destination_id: Optional[int]
     created_at: datetime
+
+class TransactionModel(BaseModel):
+    customer_origin_id: int
+    customer_destination_id: Optional[int] = None
+    amount: float
+    transaction_type: TransactionType
