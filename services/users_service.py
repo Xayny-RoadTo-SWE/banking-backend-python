@@ -1,16 +1,3 @@
-"""
-Camada de regras de negócio para USUÁRIOS INTERNOS do banco.
-
-Este arquivo será responsável por:
-- validar criação de usuários internos
-- aplicar regras de permissão e acesso
-- orquestrar operações relacionadas a funcionários do banco
-"""
-
-"""
-Regras de negócio relacionadas aos USERS (funcionários do banco).
-"""
-
 from models.user_models import UserCreateRequest, UserCreateResponse
 from tasks.user_tasks import UserTasks
 class UserServices:

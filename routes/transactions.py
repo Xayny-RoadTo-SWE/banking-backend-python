@@ -1,32 +1,18 @@
-"""
-Rotas relacionadas às TRANSAÇÕES bancárias.
-
-Transactions representam toda movimentação financeira do sistema, como:
-- depósito
-- saque
-- transferência
-
-Aqui ficarão endpoints para registrar e consultar movimentações financeiras.
-"""
 import logging
 from fastapi import APIRouter, HTTPException
 from models.transaction_models import (
-    DepositRequest,
-    WithdrawRequest,
-    TransferRequest
+    TransactionCreateRequest,
+    TransactionResponse
 )
-from services.transactions_service import TransactionServices
+from services.transactions_service import TransactionService
 
 
-router = APIRouter(
-    prefix="/transactions",
-    tags=["Transactions"]
-)
+router = APIRouter(prefix="/transaction", tags=["Transaction"])
 
 @router.post("/deposit")
-def deposit_endpoint(data: DepositRequest):
+def deposit_endpoint(data: TransactionCreateRequest):
     try:
-        TransactionServices.deposit(data.account_id, data.amount)
+        TransactionService.deposit(data.account_id, data.amount)
         return {"message": "Depósito realizado com sucesso"}
     except Exception as e:
         logging.error(f"Error while trying deposit: {e}")
@@ -38,9 +24,9 @@ def deposit_endpoint(data: DepositRequest):
 
 
 @router.post("/withdraw")
-def withdraw_endpoint(data: WithdrawRequest):
+def withdraw_endpoint(data: TransactionCreateRequest):
     try:
-        TransactionServices.withdraw(data.account_id, data.amount)
+        TransactionService.withdraw(data.account_id, data.amount)
         return {"message": "Saque realizado com sucesso"}
     except Exception as e:
         logging.error(f"Error while trying withdraw: {e}")
@@ -51,9 +37,9 @@ def withdraw_endpoint(data: WithdrawRequest):
 
 
 @router.post("/transfer")
-def transfer_endpoint(data: TransferRequest):
+def transfer_endpoint(data: TransactionCreateRequest):
     try:
-        TransactionServices.transfer(
+        TransactionService.transfer(
             data.from_account_id,
             data.to_account_id,
             data.amount
@@ -65,4 +51,12 @@ def transfer_endpoint(data: TransferRequest):
             status_code=500,
             detail="Error while trying transfer"
         )
+
+@router.get("/list_transactions_by_customer/{customer_id}")
+def list_transactions_by_customer(customer_id: int):
+    return TransactionService.list_transactions_by_customer(customer_id)
+
+@router.get("/{transaction_id}")
+def get_transaction_by_id(transaction_id: int):
+    return TransactionService.get_transaction_by_id(transaction_id)
 

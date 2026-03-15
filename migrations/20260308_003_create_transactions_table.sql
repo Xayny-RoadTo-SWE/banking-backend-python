@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     id BIGSERIAL PRIMARY KEY,
     customer_origin BIGINT NOT NULL,
     customer_destination BIGINT,
-    amount DECIMAL(10,amount DECIMAL(10,2) NOT NULL2) NOT NULL,                    
+    amount DECIMAL(10,2) NOT NULL,                    
     transaction_type VARCHAR(50) NOT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     
     CONSTRAINT fk_transactions_origin 
         FOREIGN KEY (customer_origin) 
-        REFERENCES customers(id) 
+        REFERENCES customers(id) ,
     
     CONSTRAINT fk_transactions_destination 
         FOREIGN KEY (customer_destination) 

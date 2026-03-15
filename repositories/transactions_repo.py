@@ -1,16 +1,3 @@
-"""
-Repositório de acesso ao banco de dados para TRANSACTIONS.
-
-Este arquivo será responsável por:
-- registrar transações financeiras
-- consultar histórico de movimentações
-- garantir persistência de todas as operações
-"""
-
-"""
-Repository responsável pelo acesso a dados de TRANSACTIONS.
-"""
-
 from database import DatabaseAdapter
 from repositories.repo_queries import TRANSACTION_DEPOSIT, TRANSACTION_TRANSFER, TRANSACTION_WITHDRAW, TRANSACTION_GET_CUSTOMER_AMOUNT
 import logging
@@ -55,7 +42,7 @@ class TransactionsRepository:
             raise
 
     @staticmethod
-    def get_customer_ammount(customer_id: int) -> float:
+    def get_customer_amount(customer_id: int) -> float:
         try:
             result = DatabaseAdapter.fetchone(
                 TRANSACTION_GET_CUSTOMER_AMOUNT,
@@ -65,3 +52,44 @@ class TransactionsRepository:
         except Exception as e:
             logging.error("Erro ao consultar o total de transações do cliente:", e)
             raise
+        
+    @staticmethod
+    def get_transaction_by_id(transaction_id: int):
+        try:
+            result = DatabaseAdapter.fetchdict(
+                """
+                SELECT 
+                    customer_origin,
+                    customer_destination,
+                    transaction_type,
+                    amount
+                FROM transactions
+                WHERE id = %s
+                """,
+                (transaction_id,)
+            )
+            return result
+        except Exception as e:
+            logging.error("Erro ao consultar transação por ID: %s", e)
+            raise
+        
+    @staticmethod
+    def list_transactions_by_customer(customer_id: int):
+        try:
+            return DatabaseAdapter.fetchalldict(
+                """
+                SELECT
+                    customer_origin,
+                    customer_destination,
+                    transaction_type,
+                    amount
+                    FROM transactions
+                    WHERE customer_origin = %s
+                    OR customer_destination = %s
+                    ORDER BY transaction_date DESC
+                    """,
+                    (customer_id, customer_id)
+            )
+        except Exception as e:
+           logging.exception("Erro ao listar transações do customer: %s", e)
+           raise

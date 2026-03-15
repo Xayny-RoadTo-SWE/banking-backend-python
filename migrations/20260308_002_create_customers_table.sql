@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS customers (
     document_type VARCHAR(32) NOT NULL,
     document_number VARCHAR(128) NOT NULL UNIQUE,
     amount DECIMAL(10,2) DEFAULT 0,                     
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP      
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);    
  
 CREATE INDEX IF NOT EXISTS idx_customers_full_name ON customers(full_name);
 CREATE INDEX IF NOT EXISTS idx_customers_document_type ON customers(document_type);
