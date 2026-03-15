@@ -67,9 +67,9 @@ class TestTransactionService(TestCase):
             "transactions": []
         })          
         
-        @patch("services.transactions_service.TransactionsRepository.get_transaction_by_id")
-        def test_get_transaction_by_id_not_found(self, mock_get_transaction_by_id):
-            mock_get_transaction_by_id.return_value = None
+    @patch("services.transactions_service.TransactionsRepository.get_transaction_by_id")
+    def test_get_transaction_by_id_not_found(self, mock_get_transaction_by_id):
+        mock_get_transaction_by_id.return_value = None
 
         with self.assertRaises(HTTPException) as context:
             TransactionService.get_transaction_by_id(1)

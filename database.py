@@ -10,7 +10,7 @@ def get_connection():
             host=config.DB_HOST,
             port=config.DB_PORT,
             user=config.DB_USER,
-            password=config.DB_PASS,
+            password=config.DB_PASSWORD,
             database=config.DB_NAME,
             autocommit=False
         )
@@ -32,8 +32,12 @@ class DatabaseAdapter:
             logging.info("Error on inserting database", e)
             raise
         finally:
-            cursor.close()
-            conn.close()
+            if "cursor" in locals() and cursor:
+                cursor.close()
+            if "conn" in locals() and conn:
+                conn.close()
+
+
     @staticmethod
     def fetchone(query: str, *args):
         try:
@@ -46,8 +50,10 @@ class DatabaseAdapter:
             logging.info("Error on fetching data from database", e)
             raise
         finally:
-            cursor.close()
-            conn.close()
+            if 'cursor' in locals() and cursor:
+                cursor.close()
+            if 'conn' in locals() and conn:
+                conn.close()
     
     @staticmethod
     def fetchdict(query: str, *args):
@@ -61,5 +67,7 @@ class DatabaseAdapter:
             logging.info("Error on fetching dict from database", e)
             raise
         finally:
-            cursor.close()
-            conn.close()
+            if 'cursor' in locals() and cursor:
+                cursor.close()
+            if 'conn' in locals() and conn:
+                conn.close()
