@@ -1,8 +1,7 @@
-
 CREATE TABLE IF NOT EXISTS transactions (
-    id BIGSERIAL PRIMARY KEY,
-    customer_origin BIGINT NOT NULL,
-    customer_destination BIGINT,
+    id uuid DEFAULT uuidv7() PRIMARY KEY,
+    customer_origin uuid NOT NULL,
+    customer_destination uuid,
     amount DECIMAL(10,2) NOT NULL,                    
     transaction_type VARCHAR(50) NOT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
