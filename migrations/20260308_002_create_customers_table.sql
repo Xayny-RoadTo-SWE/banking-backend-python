@@ -1,36 +1,28 @@
 CREATE TABLE IF NOT EXISTS customers (
-    id BIGSERIAL PRIMARY KEY,                          
-    full_name VARCHAR(255) NOT NULL,                   
-    birth_date TIMESTAMP NOT NULL,
+    id UUID PRIMARY KEY,                          
+    full_name VARCHAR(255) NOT NULL,                    
+    birth_date DATE NOT NULL,
     document_type VARCHAR(32) NOT NULL,
-    document_number VARCHAR(128) NOT NULL UNIQUE,
-    amount DECIMAL(10,2) DEFAULT 0,                     
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);    
- 
-CREATE INDEX IF NOT EXISTS idx_customers_full_name ON customers(full_name);
-CREATE INDEX IF NOT EXISTS idx_customers_document_type ON customers(document_type);
-CREATE INDEX IF NOT EXIST-- migrations/20260308_002_create_customers_table.sql
--- Versão para PostgreSQL
-
-CREATE TABLE IF NOT EXISTS customers (
-    id BIGSERIAL PRIMARY KEY,                          -- AUTO_INCREMENT → BIGSERIAL
-    full_name VARCHAR(255) NOT NULL,                   -- 256 → 255 (padrão PostgreSQL)
-    birth_date TIMESTAMP NOT NULL,
-    document_type VARCHAR(32) NOT NULL,
-    document_number VARCHAR(128) NOT NULL UNIQUE,
-    amount DECIMAL(10,2) DEFAULT 0,                    -- FLOAT → DECIMAL (mais preciso para dinheiro)
+    document_number VARCHAR(128) NOT NULL UNIQUE,  
+    manager_id UUID,                    
+    amount DECIMAL(10,2) DEFAULT 0,  
+    deleted_at TIMESTAMP,                  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP     -- Removeu ON UPDATE (não existe no PostgreSQL)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   
+
+    CONSTRAINT fk_customers_manager 
+        FOREIGN KEY (manager_id) 
+        REFERENCES users(id)  
+        ON DELETE SET NULL
 );
 
--- Índices para performance
+-- Índices para busca rapida
 CREATE INDEX IF NOT EXISTS idx_customers_full_name ON customers(full_name);
 CREATE INDEX IF NOT EXISTS idx_customers_document_type ON customers(document_type);
 CREATE INDEX IF NOT EXISTS idx_customers_document_number ON customers(document_number);
 CREATE INDEX IF NOT EXISTS idx_customers_birth_date ON customers(birth_date);
 
--- Trigger para atualizar updated_at automaticamente (opcional, mas recomendado)
+-- Trigger para atualizar o updated_at automaticamente (Padrão Postgres)
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -42,19 +34,4 @@ $$ language 'plpgsql';
 CREATE TRIGGER update_customers_updated_at 
     BEFORE UPDATE ON customers
     FOR EACH ROW 
-    EXECUTE FUNCTION update_updated_at_column();S idx_customers_document_number ON customers(document_number);
-CREATE INDEX IF NOT EXISTS idx_customers_birth_date ON customers(birth_date);
-
- 
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-    RETURN NEW;
-END;
-$$ language 'plpgsql';
-
-CREATE TRIGGER update_customers_updated_at 
-    BEFORE UPDATE ON customers
-    FOR EACH ROW 
-    EXECUTE FUNCTION update_updated_at_column();
+    EXECUTE PROCEDURE update_updated_at_column();

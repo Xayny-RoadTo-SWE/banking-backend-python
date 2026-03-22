@@ -1,27 +1,28 @@
-"""
-Repositório de acesso ao banco de dados para USERS (funcionários do banco).
-
-Este arquivo será responsável por:
-- persistir usuários internos
-- buscar usuários por id, login, etc.
-- atualizar dados de usuários internos
-"""
-
-"""
-Repository responsável pelo acesso a dados de USERS (funcionários).
-"""
-
+import uuid6
 from database import DatabaseAdapter
 from models.user_models import UserCreateRequest
 
 class UsersRepository:
 
     @staticmethod
-    def create_user(user: UserCreateRequest) -> None:
-        DatabaseAdapter.insert(
-            """
-            INSERT INTO users (nome, role, document_number, document_type)
-            VALUES (%s, %s, %s, %s)
-            """,
-            (user.nome, user.role, user.document_number, user.document_type)
+    def create_user(user: UserCreateRequest) -> str:
+        new_id_v7 = uuid6.uuid7()
+        
+        # TODO: Implementar bcrypt ou passlib aqui.  
+        hashed_password = user.password  # Replace with actual hashing logic
+        
+        query = """
+        INSERT INTO users (id, name, email, login, password)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        params = (
+            str(new_id_v7),
+            user.name, 
+            user.email, 
+            user.login, 
+            hashed_password
         )
+        
+        DatabaseAdapter.insert(query, params)   
+        
+        return str(new_id_v7)

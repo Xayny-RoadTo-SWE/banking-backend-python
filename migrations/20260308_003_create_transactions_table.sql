@@ -1,8 +1,15 @@
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
 
 CREATE TABLE IF NOT EXISTS transactions (
-    id BIGSERIAL PRIMARY KEY,
-    customer_origin BIGINT NOT NULL,
-    customer_destination BIGINT,
+    id UUID PRIMARY KEY,
+    customer_origin UUID NOT NULL,
+    customer_destination UUID,
     amount DECIMAL(10,2) NOT NULL,                    
     transaction_type VARCHAR(50) NOT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -11,7 +18,8 @@ CREATE TABLE IF NOT EXISTS transactions (
     
     CONSTRAINT fk_transactions_origin 
         FOREIGN KEY (customer_origin) 
-        REFERENCES customers(id) ,
+        REFERENCES customers(id)
+        ON DELETE RESTRICT,
     
     CONSTRAINT fk_transactions_destination 
         FOREIGN KEY (customer_destination) 

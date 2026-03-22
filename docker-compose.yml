@@ -1,19 +1,17 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql-server
+  db:
+    image: postgres:16
+    container_name: postgres-server
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: geocbn1709
-      MYSQL_DATABASE: ebanx_bank
-      MYSQL_USER: root
-      MYSQL_PASSWORD: geocbn1709
+      POSTGRES_ROOT_PASSWORD: batatinha123'
+      POSTGRES_DB: sunfire_bank
     ports:
-      - "3307:3306"
+      - "5433:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  mysql_data:
+  postgres_data:

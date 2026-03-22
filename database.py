@@ -1,5 +1,4 @@
 import pymysql
-from pymysql import MySQLError
 import config
 import logging
 from typing import Optional
@@ -59,7 +58,7 @@ class DatabaseAdapter:
     def fetchdict(query: str, *args):
         try:
             conn = get_connection()
-            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor = conn.cursor(psycopg2.cursors.DictCursor)
             cursor.execute(query, *args)
             result = cursor.fetchone()
             return result
