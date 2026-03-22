@@ -21,3 +21,12 @@ miniconda.exe
 Pipfile
 Pipfile.lock
 scripts/
+
+.idea/
+.vscode/
+*.sql
+my_notes.md
+
+.venv/
+__pycache__/
+*.pyc
