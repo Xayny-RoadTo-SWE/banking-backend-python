@@ -1,5 +1,24 @@
 CREATE_USER = """
-INSERT INTO users (nome) VALUES (%s);
+INSERT INTO users (id, name, email, login, password)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+
+CREATE_CUSTOMER = """
+INSERT INTO customers (
+    id,
+    full_name,
+    birth_date,
+    document_type,
+    document_number,
+    manager_id
+) VALUES (
+    %s, %s, %s, %s, %s, %s
+)
+"""
+GET_CUSTOMER_BY_ID = """
+SELECT id, full_name, birth_date, document_type, document_number, manager_id
+FROM customers
+WHERE id = %s
 """
 
 GET_BALANCE = """

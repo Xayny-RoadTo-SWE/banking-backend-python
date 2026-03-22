@@ -1,4 +1,4 @@
-from models.customer_models import CustomerCreate
+from models.customer_models import CustomerCreateRequest
 
 
 class CustomersService:
@@ -7,7 +7,7 @@ class CustomersService:
     """
 
     @staticmethod
-    def create_customer(customer: CustomerCreate):
+    def create_customer(customer: CustomerCreateRequest):
         """
         Cria um novo customer no sistema.
         """

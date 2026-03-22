@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS customers (
     document_type VARCHAR(32) NOT NULL,
     document_number VARCHAR(128) NOT NULL UNIQUE,  
     manager_id UUID,                    
-    amount DECIMAL(10,2) DEFAULT 0,  
     deleted_at TIMESTAMP,                  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   

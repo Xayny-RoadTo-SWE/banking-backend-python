@@ -41,3 +41,6 @@ class AccountsRepository:
             UPDATE_ACCOUNT_BALANCE,
             (amount, account_id)
         )
+    @staticmethod
+    def get_balance(user_id: str) -> float:
+        return DatabaseAdapter.fetchone(GET_BALANCE, user_id)

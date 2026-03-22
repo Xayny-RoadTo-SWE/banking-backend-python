@@ -17,11 +17,6 @@ class CustomerBase(BaseModel):
         pattern=r"^\d+$",
         description="Apenas os números do documento")
     manager_id: Optional[UUID] = None
-    amount: float  = 0.0
-    
-class CustomerCreate(CustomerBase):
-    id: Optional[UUID] = None
-
 class CustomerCreateRequest(CustomerBase):
     pass
 class CustomerResponse(CustomerBase):

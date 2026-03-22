@@ -1,8 +1,10 @@
 from repositories.users_repo import UsersRepository
-from models.user_models import RolesEnum, UserCreateRequest, ValidDocumentType
+#from models.user_models import RolesEnum, UserCreateRequest, ValidDocumentType
 import re
 
 class UserTasks:
+    
+    """
     @staticmethod
     def __validate_roles(role: str) -> None:
         try:
@@ -10,13 +12,15 @@ class UserTasks:
             return
         except:
             raise Exception(f"Role not found {role}")
-
+    
+    """
+    """
     @staticmethod
     def __validate_document_type(document_type: str) -> None:
         if ValidDocumentType(document_type):
             return None
         raise Exception(f"Document Type not valid {document_type}")
-
+    """
     @staticmethod
     def validate_cpf_number(cpf: str) -> None:
         pattern = r'^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$'
@@ -40,6 +44,7 @@ class UserTasks:
 
         return None
 
+"""
     @classmethod
     def validate_document_number(cls, document_type: str, document_number: str) -> None:
         document_type_functions = {
@@ -49,7 +54,9 @@ class UserTasks:
             func_valid(document_number)
         else:
             raise Exception(f"Unknown document type {document_type}")
+"""
 
+"""
     @classmethod
     def validate_user(cls, user: UserCreateRequest) -> None:
         cls.__validate_roles(user.role)
@@ -60,3 +67,4 @@ class UserTasks:
     @staticmethod
     def create_user(user: UserCreateRequest) -> None:
         UsersRepository.create_user(user)
+        """

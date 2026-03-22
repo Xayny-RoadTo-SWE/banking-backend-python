@@ -1,5 +1,6 @@
 import uuid6
 from database import DatabaseAdapter
+from repositories.repo_queries import CREATE_USER
 from models.user_models import UserCreateRequest
 
 class UsersRepository:
@@ -11,10 +12,6 @@ class UsersRepository:
         # TODO: Implementar bcrypt ou passlib aqui.  
         hashed_password = user.password  # Replace with actual hashing logic
         
-        query = """
-        INSERT INTO users (id, name, email, login, password)
-        VALUES (%s, %s, %s, %s, %s)
-        """
         params = (
             str(new_id_v7),
             user.name, 
@@ -23,6 +20,6 @@ class UsersRepository:
             hashed_password
         )
         
-        DatabaseAdapter.insert(query, params)   
+        DatabaseAdapter.insert(CREATE_USER, params)   
         
         return str(new_id_v7)
