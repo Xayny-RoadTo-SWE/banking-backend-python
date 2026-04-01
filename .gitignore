@@ -21,7 +21,3 @@ miniconda.exe
 Pipfile
 Pipfile.lock
 scripts/
-
-.idea/
-.vscode/
-my_notes.md
