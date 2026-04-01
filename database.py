@@ -1,20 +1,21 @@
-import pymysql
+import psycopg2
+from psycopg2.extras import RealDictCursor
 import config
 import logging
 from typing import Optional
 
 def get_connection():
     try:
-        return pymysql.connect(
+        return psycopg2.connect(
             host=config.DB_HOST,
             port=config.DB_PORT,
             user=config.DB_USER,
             password=config.DB_PASSWORD,
             database=config.DB_NAME,
-            autocommit=False
+            cursor_factory=RealDictCursor
         )
-    except MySQLError as e:
-        print("Erro ao conectar no MySQL:", e)
+    except psycopg2.Error as e:
+        print("Erro ao conectar no PostgreSQL:", e)
         raise
 
 class DatabaseAdapter:
@@ -24,10 +25,10 @@ class DatabaseAdapter:
             conn = get_connection()
             cursor = conn.cursor()
 
-            cursor.execute(query, *params)
+            cursor.execute(query, params)
             conn.commit()
             return True
-        except MySQLError as e:
+        except psycopg2.Error as e:
             logging.info("Error on inserting database", e)
             raise
         finally:
@@ -41,12 +42,12 @@ class DatabaseAdapter:
     def fetchone(query: str, *args):
         try:
             conn = get_connection()
-            cursor = conn.cursor()
-
-            return cursor.execute(query, *args).fetchone()
-            
-        except MySQLError as e:
-            logging.info("Error on fetching data from database", e)
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute(query, *args)
+            result = cursor.fetchone()
+            return result
+        except psycopg2.Error as e:
+            logging.info("Error on fetching data from database: %s", e)
             raise
         finally:
             if 'cursor' in locals() and cursor:
@@ -56,14 +57,20 @@ class DatabaseAdapter:
     
     @staticmethod
     def fetchdict(query: str, *args):
+        return DatabaseAdapter.fetchone(query, *args)
+    
+    @staticmethod
+    def fetchalldict(query: str, *args):
+        conn = None
+        cursor = None
         try:
             conn = get_connection()
             cursor = conn.cursor(psycopg2.cursors.DictCursor)
             cursor.execute(query, *args)
-            result = cursor.fetchone()
+            result = cursor.fetchall()
             return result
-        except MySQLError as e:
-            logging.info("Error on fetching dict from database", e)
+        except psycopg2.Error as e:
+            logging.info("Error on fetching all data from database: %s", e)
             raise
         finally:
             if 'cursor' in locals() and cursor:

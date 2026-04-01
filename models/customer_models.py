@@ -1,8 +1,16 @@
-from uuid import UUID
-from datetime import date, datetime
-from typing import Optional
-from pydantic import BaseModel, Field
-from enum import Enum
+from pydantic import BaseModel
+
+class CustomerCreateRequest(BaseModel):
+    name: str
+    manager_id: int
+
+class CustomerResponse(BaseModel):
+    id: int
+    name: str
+    manager_id: int
+    balance: float
+
+from datetime import date
 
 class DocumentType(str, Enum):
     CPF = "CPF"
