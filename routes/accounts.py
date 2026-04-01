@@ -1,15 +1,3 @@
-"""
-Rotas relacionadas às CONTAS BANCÁRIAS.
-
-Accounts representam as contas que pertencem aos customers.
-Um customer pode possuir múltiplas contas.
-
-Aqui ficarão endpoints para:
-- abrir conta bancária
-- listar contas de um customer
-- encerrar conta
-"""
-
 import logging
 from fastapi import APIRouter, HTTPException
 from models.account_models import AccountCreate
