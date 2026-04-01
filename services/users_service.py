@@ -1,18 +1,9 @@
-"""
-Camada de regras de negócio para USUÁRIOS INTERNOS do banco.
-
-Este arquivo será responsável por:
-- validar criação de usuários internos
-- aplicar regras de permissão e acesso
-- orquestrar operações relacionadas a funcionários do banco
-"""
-
-"""
-Regras de negócio relacionadas aos USERS (funcionários do banco).
-"""
-
-from models.user_models import UserCreateRequest, UserCreateResponse
+import logging
+from uuid import UUID
+from models.user_models import UserCreateRequest, UserResponse
 from tasks.user_tasks import UserTasks
+ 
+
 class UserServices:
 
     @staticmethod
@@ -20,10 +11,27 @@ class UserServices:
         """
         Cria um usuário interno do banco.
         """
+        logging.info(f"Iniciando criação de usuário: {user.name}")
+        
+        user.id = UUID
+        
         UserTasks.validate_user(user)
         UserTasks.create_user(user)
-        return UserCreateResponse(message="usuario criado com sucesso", http_code="ok")
+        
+        return UserResponse(message="usuario criado com sucesso", http_code="ok")
 
+@staticmethod
+def get_user_balance(user_id: str):
+    """Busca o saldo de um usuário específico.
+       Trazido da lógica antiga do services.py para manter a organização.
+    """
+    result = get_balance(str(user_id))
+    
+    if result is None:
+        logging.error(f"Usuário {user_id} não encontrado para consulta de saldo.")
+        return None
+    
+    return result[0]
 
     @staticmethod
     def authenticate_user(login: str, password: str):

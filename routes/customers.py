@@ -22,8 +22,8 @@ def create_customer(customer: CustomerCreateRequest):
     )
 import logging
 from fastapi import APIRouter, HTTPException
-from models.customer_models import CustomerCreate
-from services.customers_service import CustomerServices
+from models.customer_models import CustomerCreateRequest
+from services.customers_service import CustomersService
 
 
 router = APIRouter(
@@ -32,9 +32,9 @@ router = APIRouter(
 )
 
 @router.post("/")
-def create_customer_endpoint(customer: CustomerCreate):
+def create_customer_endpoint(customer: CustomerCreateRequest):
     try:
-        CustomerServices.create_customer(customer)
+        CustomersService.create_customer(customer)
         return {"message": "Customer criado com sucesso"}
     except Exception as e:
         logging.error(f"Error while trying create customer: {e}")

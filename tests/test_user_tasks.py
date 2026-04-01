@@ -81,12 +81,12 @@ class TestUserTasks(TestCase):
         user = UserCreateRequest(
             nome ="doe",
             role="Gerente",
-            document_type="RG",
+            document_type="INVALIDO",
             document_number="123.456.789-09"
             )
         with self.assertRaises(Exception) as cm:
             UserTasks.validate_user(user)
-        self.assertIn("Document Type not valid", str(cm.exception))
+        self.assertIn("is not a valid ValidDocumentType", str(cm.exception))
 
 
     def test_valid_cpf_number(self) -> None:
@@ -154,4 +154,4 @@ class TestUserTasks(TestCase):
         with patch("tasks.user_tasks.UsersRepository.create_user") as mock_create:
             UserTasks.create_user(user)
 
-            mock_create.assert_called_once_with(user)
+            mock_create.assert_called_once_with(user)                                        

@@ -1,13 +1,6 @@
-"""
-Camada de regras de negócio para TRANSAÇÕES.
-
-Este arquivo será responsável por:
-- validar operações financeiras
-- garantir regras como saldo suficiente
-- registrar corretamente cada movimentação no sistema
-"""
-
-class TransactionServices:
+from fastapi import HTTPException
+from repositories.transactions_repo import TransactionsRepository
+class TransactionService:
 
     @staticmethod
     def deposit(account_id: int, amount: float):
@@ -39,3 +32,35 @@ class TransactionServices:
         # TODO: creditar conta destino
         # TODO: registrar transação
         pass
+
+    @staticmethod   
+    def get_transaction_by_id(transaction_id: int):
+        transaction = TransactionsRepository.get_transaction_by_id(transaction_id) 
+        
+        if not transaction:
+            raise HTTPException(status_code=404, detail="Transaction not found")
+        
+        return {
+            "transaction": {
+                "customer_origin" : transaction["customer_origin"],
+                "customer_dest" : transaction["customer_destination"],
+                "operation" : transaction["transaction_type"],
+                "amount" : transaction["amount"]
+            }
+        }
+        
+    @staticmethod
+    def list_transactions_by_customer(customer_id: int):
+        transactions = TransactionsRepository.list_transactions_by_customer(customer_id)
+        
+        return {
+            "transactions": [
+                {
+                    "customer_origin" : transaction["customer_origin"],
+                    "customer_dest" : transaction["customer_destination"],
+                    "operation" : transaction["transaction_type"],
+                    "amount" : transaction["amount"]
+                }
+                for transaction in transactions
+            ]
+        }

@@ -6,9 +6,8 @@ services:
     container_name: postgres-server
     restart: always
     environment:
-      POSTGRES_PASSWORD: batatinha123
-      POSTGRES_DB: banking_db
-      POSTGRES_USER: postgres
+      POSTGRES_ROOT_PASSWORD: batatinha123'
+      POSTGRES_DB: sunfire_bank
     ports:
       - "5433:5432"
     volumes:

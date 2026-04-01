@@ -1,26 +1,32 @@
-"""
-Regras de negócio relacionadas aos CUSTOMERS (clientes do banco).
-"""
+from models.customer_models import CustomerCreateRequest
 
 
-@staticmethod
-def get_accounts_by_customer(customer_id: int):
-    pass
-
+class CustomersService:
     """
-    Cria um novo customer no sistema.
+    Regras de negócio relacionadas aos CUSTOMERS (clientes do banco).
     """
-    # TODO: validar dados do customer
-    # TODO: persistir customer no banco
+
+    @staticmethod
+    def create_customer(customer: CustomerCreateRequest):
+        """
+        Cria um novo customer no sistema.
+        """
+        # TODO: validar dados do customer
+        # TODO: persistir customer no banco
+        pass
+
+    @staticmethod
+    def get_accounts_by_customer(customer_id: int):
+        pass
 
 
 
-@staticmethod
+    @staticmethod
     def get_customer_by_id(customer_id: int):
         pass
 
-    """
-    Busca um customer pelo ID.
-    """
-    # TODO: buscar customer no banco
+        """
+        Busca um customer pelo ID.
+        """
+        # TODO: buscar customer no banco
 

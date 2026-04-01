@@ -32,10 +32,12 @@ class DatabaseAdapter:
             logging.info("Error on inserting database", e)
             raise
         finally:
-            if cursor:
+            if "cursor" in locals() and cursor:
                 cursor.close()
-            if conn:
+            if "conn" in locals() and conn:
                 conn.close()
+
+
     @staticmethod
     def fetchone(query: str, *args):
         try:
@@ -50,6 +52,8 @@ class DatabaseAdapter:
         finally:
             if 'cursor' in locals() and cursor:
                 cursor.close()
+            if 'conn' in locals() and conn:
+                conn.close()
     
     @staticmethod
     def fetchdict(query: str, *args):
@@ -61,7 +65,7 @@ class DatabaseAdapter:
         cursor = None
         try:
             conn = get_connection()
-            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            cursor = conn.cursor(psycopg2.cursors.DictCursor)
             cursor.execute(query, *args)
             result = cursor.fetchall()
             return result
@@ -69,7 +73,7 @@ class DatabaseAdapter:
             logging.info("Error on fetching all data from database: %s", e)
             raise
         finally:
-            if cursor:
+            if 'cursor' in locals() and cursor:
                 cursor.close()
-            if conn:
+            if 'conn' in locals() and conn:
                 conn.close()

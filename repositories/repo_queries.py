@@ -1,5 +1,24 @@
 CREATE_USER = """
-INSERT INTO users (nome) VALUES (%s);
+INSERT INTO users (id, name, email, login, password)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+
+CREATE_CUSTOMER = """
+INSERT INTO customers (
+    id,
+    full_name,
+    birth_date,
+    document_type,
+    document_number,
+    manager_id
+) VALUES (
+    %s, %s, %s, %s, %s, %s
+)
+"""
+GET_CUSTOMER_BY_ID = """
+SELECT id, full_name, birth_date, document_type, document_number, manager_id
+FROM customers
+WHERE id = %s
 """
 
 GET_BALANCE = """
@@ -36,4 +55,40 @@ INSERT INTO transactions (
     %s,
     %s
 )
+"""
+
+TRANSACTION_WITHDRAW = """
+    INSERT INTO transactions (
+        customer_origin_id,,
+        amount
+    ) VALUES (
+        %s,
+        'withdraw',
+        %s
+    )
+"""
+TRANSACTION_DEPOSIT = """
+    INSERT INTO transactions (
+        customer_origin_id,
+        amount
+    ) VALUES (
+        %s,
+        'deposit',
+        %s
+    )
+"""
+TRANSACTION_TRANSFER = """
+    INSERT INTO transactions (
+        customer_origin_id,
+        customer_destination_id,
+        amount
+    ) VALUES (
+        %s,
+        %s,
+        'transfer',
+        %s
+)
+        """
+TRANSACTION_GET_CUSTOMER_AMOUNT = """
+    SELECT amount FROM customers WHERE id=%s
 """
