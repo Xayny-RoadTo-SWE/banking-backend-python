@@ -1,7 +1,6 @@
 import logging
 from fastapi import APIRouter, HTTPException
 from models.customer_models import CustomerCreateRequest
-from models.customer_models import CustomerCreate
 from services.customers_service import CustomersService
 
 

@@ -22,27 +22,6 @@ app = FastAPI(
     swagger_ui_parameters={"syntaxHighlight": True}  
 )
 
-<<<<<<< HEAD
-app.include_router(customers.router)
-app.include_router(users.router)
-app.include_router(accounts.router)
-app.include_router(transactions.router)
-
-# TODO: ver depois nao gostei está no main
-@app.post("/users")
-def create_user_endpoint(user: UserCreateRequest):
-    logging.info(f"Recebida requisição para criar usuário: {user.nome}")
-    return {"message": f"Usuário '{user.nome}' criado com sucesso"}
-
-@app.post("/customers", response_model=CustomerResponse, status_code=201)
-def create_customer_endpoint(customer: CustomerCreateRequest):
-    return CustomerResponse(
-        id=1,
-        name=customer.name,
-        manager_id=customer.manager_id,
-        balance=0.0
-    )
-=======
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(customers.router)
@@ -55,4 +34,3 @@ async def read_root():
     
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
->>>>>>> 5f01a611ad639da564281c656aa3bb3f2f9a2d18
