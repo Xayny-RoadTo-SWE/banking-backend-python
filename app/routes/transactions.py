@@ -1,18 +1,22 @@
 import logging
 from fastapi import APIRouter, HTTPException
 from models.transaction_models import (
-    TransactionCreateRequest,
-    TransactionResponse
+    DepositRequest,
+    WithdrawRequest,
+    TransferRequest
 )
-from services.transactions_service import TransactionService
+from services.transactions_service import TransactionServices
 
 
-router = APIRouter(prefix="/transaction", tags=["Transaction"])
+router = APIRouter(
+    prefix="/transactions",
+    tags=["Transactions"]
+)
 
 @router.post("/deposit")
-def deposit_endpoint(data: TransactionCreateRequest):
+def deposit_endpoint(data: DepositRequest):
     try:
-        TransactionService.deposit(data.account_id, data.amount)
+        TransactionServices.deposit(data.account_id, data.amount)
         return {"message": "Depósito realizado com sucesso"}
     except Exception as e:
         logging.error(f"Error while trying deposit: {e}")
@@ -24,9 +28,9 @@ def deposit_endpoint(data: TransactionCreateRequest):
 
 
 @router.post("/withdraw")
-def withdraw_endpoint(data: TransactionCreateRequest):
+def withdraw_endpoint(data: WithdrawRequest):
     try:
-        TransactionService.withdraw(data.account_id, data.amount)
+        TransactionServices.withdraw(data.account_id, data.amount)
         return {"message": "Saque realizado com sucesso"}
     except Exception as e:
         logging.error(f"Error while trying withdraw: {e}")
@@ -37,9 +41,9 @@ def withdraw_endpoint(data: TransactionCreateRequest):
 
 
 @router.post("/transfer")
-def transfer_endpoint(data: TransactionCreateRequest):
+def transfer_endpoint(data: TransferRequest):
     try:
-        TransactionService.transfer(
+        TransactionServices.transfer(
             data.from_account_id,
             data.to_account_id,
             data.amount
@@ -51,12 +55,4 @@ def transfer_endpoint(data: TransactionCreateRequest):
             status_code=500,
             detail="Error while trying transfer"
         )
-
-@router.get("/list_transactions_by_customer/{customer_id}")
-def list_transactions_by_customer(customer_id: int):
-    return TransactionService.list_transactions_by_customer(customer_id)
-
-@router.get("/{transaction_id}")
-def get_transaction_by_id(transaction_id: int):
-    return TransactionService.get_transaction_by_id(transaction_id)
 

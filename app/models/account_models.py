@@ -4,4 +4,3 @@ from pydantic import BaseModel
 class AccountCreate(BaseModel):
     customer_id: UUID
     account_type: str
-    amout: float = 0.0

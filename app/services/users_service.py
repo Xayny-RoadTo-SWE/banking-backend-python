@@ -1,9 +1,7 @@
 import logging
-from uuid import UUID
-from models.user_models import UserCreateRequest, UserResponse
+from models.user_models import UserCreateRequest, UserCreateResponse
 from tasks.user_tasks import UserTasks
- 
-
+from repositories.repo import BankRepo
 class UserServices:
 
     @staticmethod
@@ -11,21 +9,17 @@ class UserServices:
         """
         Cria um usuário interno do banco.
         """
-        logging.info(f"Iniciando criação de usuário: {user.name}")
-        
-        user.id = UUID
-        
+        logging.info(f"Iniciando criação de usuário: {user.nome}")
         UserTasks.validate_user(user)
         UserTasks.create_user(user)
-        
-        return UserResponse(message="usuario criado com sucesso", http_code="ok")
+        return UserCreateResponse(message="usuario criado com sucesso", http_code="ok")
 
 @staticmethod
-def get_user_balance(user_id: str):
+def get_user_balance(user_id: int):
     """Busca o saldo de um usuário específico.
        Trazido da lógica antiga do services.py para manter a organização.
     """
-    result = get_balance(str(user_id))
+    result = BankRepo.get_balance(str(user_id))
     
     if result is None:
         logging.error(f"Usuário {user_id} não encontrado para consulta de saldo.")

@@ -1,4 +1,4 @@
-from models.customer_models import CustomerCreateRequest
+from models.customer_models import CustomerCreate
 
 
 class CustomersService:
@@ -7,7 +7,7 @@ class CustomersService:
     """
 
     @staticmethod
-    def create_customer(customer: CustomerCreateRequest):
+    def create_customer(customer: CustomerCreate):
         """
         Cria um novo customer no sistema.
         """
@@ -25,8 +25,11 @@ class CustomersService:
     def get_customer_by_id(customer_id: int):
         pass
 
+    @staticmethod
+    def get_customer_by_id(customer_id: int):
         """
         Busca um customer pelo ID.
         """
         # TODO: buscar customer no banco
+        pass
 
