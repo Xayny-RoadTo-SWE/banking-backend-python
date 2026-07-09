@@ -8,6 +8,9 @@ class UserBase(BaseModel):
     login: str
 class UserCreateRequest(UserBase):
     password: str
+class UserUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    login: Optional[str] = None
 class UserResponse(UserBase):
     id: UUID
     created_at: datetime
@@ -15,7 +18,3 @@ class UserResponse(UserBase):
     class Config:
         from_attributes = True
         
-class UserUpdateRequest(UserBase):
-    name: Optional[str] = None
-    email: Optional[str] = None
-    login: Optional[str] = None

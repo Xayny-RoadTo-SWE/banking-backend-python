@@ -1,5 +1,5 @@
-import pymysql
-from pymysql import MySQLError
+import psycopg2
+from psycopg2.extras import RealDictCursor
 import app.config as config
 import logging
 from typing import Optional
@@ -65,7 +65,7 @@ class DatabaseAdapter:
         cursor = None
         try:
             conn = get_connection()
-            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute(query, *args)
             result = cursor.fetchall()
             return result

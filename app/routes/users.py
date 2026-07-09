@@ -1,6 +1,6 @@
 import logging
 from fastapi import APIRouter, HTTPException
-from models.user_models import UserCreateRequest
+from app.models.user_models import UserCreateRequest
 from services.users_service import UserServices
 
 

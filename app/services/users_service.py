@@ -1,6 +1,6 @@
 import logging
 from models.user_models import UserCreateRequest, UserCreateResponse
-from tasks.user_tasks import UserTasks
+from user_tasks import UserTasks
 from repositories.repo import BankRepo
 class UserServices:
 
