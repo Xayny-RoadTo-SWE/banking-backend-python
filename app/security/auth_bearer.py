@@ -1,7 +1,7 @@
-from fastapi import HTTPException, Request, status
+from fastapi import HTTPException, Request, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from .auth_handler import decode_jwt
-
+from models.user import User
 
 class JWTBearer(HTTPBearer):
     def __init__(self, auto_error: bool = True):

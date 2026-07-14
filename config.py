@@ -16,15 +16,15 @@ DB_NAME = os.getenv("DB_NAME", "sunfire_bank")
 
 SECRET_KEY = os.getenv("SECRET_KEY", "chave_secreta_super_segura_sunfire_bank")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
-ACCESS_TOKE_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKE_EXPIRE_MINUTES", "30"))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKE_EXPIRE_MINUTES", "30"))
 class Settings:
     # URL de conexão montada dinamicamente
     DATABASE_URL: str = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-# Expondo as variáveis de segurança para o resto do sistema
-SECRET_KEY: str = SECRET_KEY
-ALGORITHM: str = ALGORITHM
-ACCESS_TOKE_EXPIRE_MINUTES: int = ACCESS_TOKE_EXPIRE_MINUTES
+    # Expondo as variáveis de segurança para o resto do sistema
+    SECRET_KEY: str = SECRET_KEY
+    ALGORITHM: str = ALGORITHM
+    ACCESS_TOKE_EXPIRE_MINUTES: int = ACCESS_TOKEN_EXPIRE_MINUTES
 
 settings = Settings()
 
