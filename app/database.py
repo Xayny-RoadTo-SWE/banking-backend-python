@@ -1,6 +1,7 @@
 import psycopg2
+from psycopg2 import Error as PostgresError
 from psycopg2.extras import RealDictCursor
-import app.config as config
+import config
 import logging
 from typing import Optional
 
@@ -11,10 +12,9 @@ def get_connection():
             port=config.DB_PORT,
             user=config.DB_USER,
             password=config.DB_PASSWORD,
-            database=config.DB_NAME,
-            cursor_factory=RealDictCursor
+            dbname=config.DB_NAME
         )
-    except psycopg2.Error as e:
+    except PostgresError as e:
         print("Erro ao conectar no PostgreSQL:", e)
         raise
 
@@ -25,11 +25,11 @@ class DatabaseAdapter:
             conn = get_connection()
             cursor = conn.cursor()
 
-            cursor.execute(query, params)
+            cursor.execute(query, params if params else None)
             conn.commit()
             return True
-        except psycopg2.Error as e:
-            logging.info("Error on inserting database", e)
+        except PostgresError as e:
+            logging.error(f"Error on inserting database: {e}")
             raise
         finally:
             if "cursor" in locals() and cursor:
@@ -42,12 +42,13 @@ class DatabaseAdapter:
     def fetchone(query: str, *args):
         try:
             conn = get_connection()
-            cursor = conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute(query, *args)
-            result = cursor.fetchone()
-            return result
-        except psycopg2.Error as e:
-            logging.info("Error on fetching data from database: %s", e)
+            cursor = conn.cursor()
+            
+            cursor.execute(query, args)
+            return cursor.fetchone()
+        
+        except PostgresError as e:
+            logging.error(f"Error on fetching data from database: {e}")
             raise
         finally:
             if 'cursor' in locals() and cursor:
@@ -66,11 +67,12 @@ class DatabaseAdapter:
         try:
             conn = get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute(query, *args)
-            result = cursor.fetchall()
+            
+            cursor.execute(query, args)
+            result = cursor.fetchone()
             return result
-        except psycopg2.Error as e:
-            logging.info("Error on fetching all data from database: %s", e)
+        except PostgresError as e:
+            logging.error(f"Error on fetching dict from database: {e}")
             raise
         finally:
             if 'cursor' in locals() and cursor:
