@@ -13,7 +13,7 @@ router = APIRouter(
 def request_loan(data: LoanRequest, current_user = Depends(get_current_user)) -> LoanResponse:
     return LoanServices.request_loan(current_user.id, data)
 
-@router.get("/{loan_id}", response_model=LoanRequest)
-def get_loan_status(loan_id: UUID, currente_user = Depends(get_current_user)) -> LoanResponse:
-    return LoanServices.get_loan_details(loan_id, currente_user.id)
+@router.get("/{loan_id}", response_model=LoanResponse)
+def get_loan_status(loan_id: UUID, current_user = Depends(get_current_user)) -> LoanResponse:
+    return LoanServices.get_loan_details(loan_id, current_user.id)
 
