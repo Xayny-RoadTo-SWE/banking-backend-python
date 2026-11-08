@@ -24,7 +24,6 @@ scripts/
 
 .idea/
 .vscode/
-*.sql
 my_notes.md
 
 .venv/
