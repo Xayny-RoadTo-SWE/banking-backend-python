@@ -1,24 +1,39 @@
-from uuid import UUID
 from datetime import datetime
-from typing import Optional
-from pydantic import BaseModel, Field
+from uuid import UUID
+from decimal import Decimal
 from enum import Enum
 
+from pydantic import (
+    BaseModel,
+    Field,
+    ConfigDict
+)
 class TransactionType(str, Enum):
-    DEPOSIT = "deposit"
-    WITHDRAW = "withdraw"
-    TRANSFER = "transfer"
-class TransactionModel(BaseModel):
-    customer_origin: UUID
-    customer_destination: Optional[UUID] = None
-    amount: float = Field(..., gt=0, description="O valor da transação deve ser maior que zero" )
+    DEPOSIT = "DEPOSIT"
+    WITHDRAW = "WITHDRAW"
+    TRANSFER_IN = "TRANSFER_IN"
+    TRANSFER_OUT = "TRANSFER_OUT"
+
+class TransactionCreate(BaseModel):
+    
+    account_id: UUID
+    related_account_id: UUID | None = None
+    amount: Decimal = Field(
+        ...,
+        gt=0,
+        description="Transaction amount must be greater than zero"
+    )
+    
     transaction_type: TransactionType
-class TransactionCreateRequest(TransactionModel):
-    pass
-class TransactionResponse(TransactionModel):
-    id: UUID
-    transaction_date: datetime
+    
+class TransactionResponse(BaseModel):
+    transaction_id: UUID
+    account_id: UUID
+    related_account_id: UUID | None = None
+    amount: Decimal
+    transaction_type: TransactionType
     created_at: datetime
-    updated_at: datetime    
-    class Config:
-        from_attributes = True
+    
+    model_config = ConfigDict(
+        from_attributes=True
+    )
