@@ -1,41 +1,28 @@
-from pydantic import BaseModel
+from datetime import datetime, date 
+from uuid import UUID
+from typing import Literal
 
-class CustomerCreateRequest(BaseModel):
-    name: str
-    manager_id: int
+from pydantic import BaseModel, ConfigDict
 
-class CustomerResponse(BaseModel):
-    id: int
-    name: str
-    manager_id: int
-    balance: float
-
-from datetime import date
-
-class DocumentType(str, Enum):
-    CPF = "CPF"
-    RG = "RG"
-class CustomerBase(BaseModel):
-    full_name: str
-    birth_date: date
-    document_type: DocumentType
-    document_number: str = Field(
-        min_length=5, 
-        max_length=20, 
-        pattern=r"^\d+$",
-        description="Apenas os números do documento")
-    manager_id: Optional[UUID] = None
-    amount: float  = 0.0
+class CustomerCreate(BaseModel):
     
-class CustomerCreate(CustomerBase):
-    id: Optional[UUID] = None
+    person_id: UUID
+    manager_id: UUID | None = None
+    risk_profile: Literal[
+        "LOW",
+         "MEDIUM",
+         "HIGH"
+    ] = "LOW"
+    
+class CustomerResponse(BaseModel):
 
-class CustomerCreateRequest(CustomerBase):
-    pass
-class CustomerResponse(CustomerBase):
-    id: UUID
+    person_id: UUID
+    manager_id: UUID | None = None
+    risk_profile: Literal["LOW", "MEDIUM", "HIGH"]
+    customer_since: date
+    status: str
     created_at: datetime
     updated_at: datetime
-    deleted_at: Optional[datetime] = None
-    class Config:
-        from_attributes = True
+    deleted_at: datetime | None = None
+    
+    model_config = ConfigDict(from_attributes=True)

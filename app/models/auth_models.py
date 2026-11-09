@@ -1,16 +1,28 @@
-from pydantic import BaseModel,Field, EmailStr
-
+from pydantic import(
+    BaseModel,
+    Field, 
+    EmailStr,
+    ConfigDict
+)
 class UserLogin(BaseModel):
-    email: EmailStr = Field(..., description="O endereço de email do usuário")
-    password: str = Field(..., description="A senha do usuário")
+    email: EmailStr = Field(
+        ..., 
+        description="User email"
+    )
     
-class Config:
-    json_schema_extra = {
-        "example": {
+    password: str = Field(
+        ...,
+        description="User password"
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
                 "email": "alex@sunfire.com",
                 "password": "senha_secreta_aqui"
-        }       
-    }
+            }
+        }
+    )
     
     # Esquema para a resposta que contém o Token JWT
 class TokenSchema(BaseModel):

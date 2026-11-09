@@ -1,20 +1,33 @@
 from uuid import UUID
 from datetime import datetime
-from typing import Optional
-from pydantic import BaseModel
-class UserBase(BaseModel):
-    name: str
-    email: str
-    login: str
-class UserCreateRequest(UserBase):
-    password: str
-class UserUpdateRequest(BaseModel):
-    name: Optional[str] = None
-    login: Optional[str] = None
-class UserResponse(UserBase):
-    id: UUID
+
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field
+)
+
+class UserCreateRequest(BaseModel):
+    person_id: UUID
+    username: str = Field(
+        ...,
+        min_length=3,
+        max_length=50
+    )
+    
+    password: str = Field(
+        ...,
+        min_length=8
+    )
+    
+class UserResponse(BaseModel):
+    user_id: UUID
+    person_id: UUID
+    username: str
     created_at: datetime
     updated_at: datetime
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+    
         
