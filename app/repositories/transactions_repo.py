@@ -1,6 +1,6 @@
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.transactions_models import TransactionCreate
+from app.schemas.transactions_schemas import TransactionCreate
 
 
 class TransactionRepository:

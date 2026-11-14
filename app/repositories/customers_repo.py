@@ -1,6 +1,6 @@
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.customers_models import (
+from app.schemas.customers_schemas import (
     CustomerCreate,
     CustomerUpdate
 )

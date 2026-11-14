@@ -6,13 +6,13 @@ from pydantic import BaseModel, ConfigDict
 
 class AccountCreate(BaseModel):
     
-    customer_id: UUID
+    person_id: UUID
     account_number: str
     
 class AccountResponse(BaseModel):
     
     account_id: UUID
-    customer_id: UUID
+    person_id: UUID
     account_number: str
     balance: float
     status: Literal[
