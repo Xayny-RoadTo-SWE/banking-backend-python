@@ -1,6 +1,6 @@
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.users_models import(
+from app.schemas.users_schemas import(
     UserCreateRequest,
     UserUpdate
 )

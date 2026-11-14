@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.persons_models import PersonCreate, PersonUpdate
+from app.schemas.persons_schemas import PersonCreate, PersonUpdate
 
 
 class PersonRepository:
