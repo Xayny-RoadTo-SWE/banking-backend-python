@@ -29,3 +29,21 @@ my_notes.md
 .venv/
 __pycache__/
 *.pyc
+
+# Virtual environments
+.venv/
+.venv-1/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Pytest
+.pytest_cache/
+
+# VS Code
+.vscode/
+
+# Environment variables
+.env
