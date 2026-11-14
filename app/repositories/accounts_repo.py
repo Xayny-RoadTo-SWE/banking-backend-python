@@ -1,46 +1,39 @@
-"""
-Repositório de acesso ao banco de dados para ACCOUNTS.
-
-Este arquivo será responsável por:
-- criar contas bancárias no banco de dados
-- buscar contas por customer
-- atualizar status e saldo das contas
-"""
-
-"""
-Repository responsável pelo acesso a dados de ACCOUNTS.
-"""
-
-from database import DatabaseAdapter
-from repositories.repo_queries import (
-    CREATE_ACCOUNT,
-    GET_ACCOUNTS_BY_CUSTOMER,
-    UPDATE_ACCOUNT_BALANCE,
+from uuid import UUID
+from sqlalchemy.ext.asyncio import AsyncSession
+from models.accounts_models import (
+    AccountCreate,
+    AccountUpdate
 )
 
-
-class AccountsRepository:
-
-    @staticmethod
-    def create_account(customer_id: int, account_type: str, saldo_inicial: float):
-        DatabaseAdapter.insert(
-            CREATE_ACCOUNT,
-            (customer_id, account_type, saldo_inicial)
-        )
-
-    @staticmethod
-    def get_accounts_by_customer(customer_id: int):
-        return DatabaseAdapter.fetchall(
-            GET_ACCOUNTS_BY_CUSTOMER,
-            (customer_id,)
-        )
-
-    @staticmethod
-    def update_balance(account_id: int, amount: float):
-        DatabaseAdapter.execute(
-            UPDATE_ACCOUNT_BALANCE,
-            (amount, account_id)
-        )
-    @staticmethod
-    def get_balance(user_id: str) -> float:
-        return DatabaseAdapter.fetchone(GET_BALANCE, user_id)
+class AccountRepository:
+    
+    def __init__(self, session: AsyncSession):
+        self.session = session
+        
+    async def create_account(
+            self,
+            account_data: AccountCreate
+        ):
+            pass
+        
+    async def get_account_by_id(
+            self,
+            account_id: UUID
+        ):
+            pass
+        
+    async def list_accounts(self):
+            pass
+        
+    async def update_account(
+            self,
+            account_id: UUID,
+            account_data: AccountUpdate
+        ):
+            pass
+        
+    async def delete_account(
+            self,
+            account_id: UUID
+        ):
+            pass

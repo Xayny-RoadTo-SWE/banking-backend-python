@@ -1,25 +1,39 @@
-import uuid6
-from database import DatabaseAdapter
-from repositories.repo_queries import CREATE_USER
-from models.user_models import UserCreateRequest
+from uuid import UUID
+from sqlalchemy.ext.asyncio import AsyncSession
+from models.users_models import(
+    UserCreateRequest,
+    UserUpdate
+)
 
-class UsersRepository:
+class UserRepository:
+    
+    def __init__(self, session: AsyncSession):
+        self.session = session
+        
+    async def create_user(
+        self,
+        user_data: UserCreateRequest
+    ):
+        pass
+    
+    async def get_user_by_id(
+        self,
+        user_id: UUID
+    ):
+        pass
 
-    @staticmethod
-    def create_user(user: UserCreateRequest) -> str:
-        new_id_v7 = uuid6.uuid7()
-        
-        # TODO: Implementar bcrypt ou passlib aqui.  
-        hashed_password = user.password  # Replace with actual hashing logic
-        
-        params = (
-            str(new_id_v7),
-            user.name, 
-            user.email, 
-            user.login, 
-            hashed_password
-        )
-        
-        DatabaseAdapter.insert(CREATE_USER, params)   
-        
-        return str(new_id_v7)
+    async def list_users(self):
+        pass
+    
+    async def update_user(
+        self,
+        user_id: UUID,
+        user_data: UserUpdate
+    ):
+        pass
+    
+    async def delete_user(
+        self,
+        user_id: UUID
+    ):
+        pass

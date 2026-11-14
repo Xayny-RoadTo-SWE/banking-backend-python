@@ -1,95 +1,35 @@
-from database import DatabaseAdapter
-from repositories.repo_queries import TRANSACTION_DEPOSIT, TRANSACTION_TRANSFER, TRANSACTION_WITHDRAW, TRANSACTION_GET_CUSTOMER_AMOUNT
-import logging
-from models.transaction_models import TransactionModel
-class TransactionsRepository:
+from uuid import UUID
+from sqlalchemy.ext.asyncio import AsyncSession
+from models.transactions_models import TransactionCreate
 
-    @staticmethod
-    def transaction_withdraw(
-        transaction: TransactionModel
-    ):
-        try:
-            DatabaseAdapter.insert(
-                TRANSACTION_WITHDRAW,
-                (transaction.customer_origin_id, transaction.amount)
-            )
-        except Exception as e:
-            logging.error("Erro ao registrar transação de saque:", e)
-            raise
-    @staticmethod
-    def transaction_deposit(
-        transaction: TransactionModel
-    ):
-        try:
-            DatabaseAdapter.insert(
-                TRANSACTION_DEPOSIT,
-                (transaction.customer_origin_id, transaction.amount)
-            )
-        except Exception as e:
-            logging.error("Erro ao registrar transação de deposito:", e)
-            raise
-    @staticmethod
-    def transaction_transfer(
-        transaction: TransactionModel
-    ):
-        try:
-            DatabaseAdapter.insert(
-                TRANSACTION_TRANSFER,
-                (transaction.customer_origin_id,transaction.customer_destination_id, transaction.amount)
-            )
-        except Exception as e:
-            logging.error("Erro ao registrar transação de deposito:", e)
-            raise
 
-    @staticmethod
-    def get_customer_amount(customer_id: int) -> float:
-        try:
-            result = DatabaseAdapter.fetchone(
-                TRANSACTION_GET_CUSTOMER_AMOUNT,
-                (customer_id,)
-            )
-            return result[0] if result else 0.0
-        except Exception as e:
-            logging.error("Erro ao consultar o total de transações do cliente:", e)
-            raise
+class TransactionRepository:
+    def __init__(self, session: AsyncSession):
+        self.session = session
         
-    @staticmethod
-    def get_transaction_by_id(transaction_id: int):
-        try:
-            result = DatabaseAdapter.fetchdict(
-                """
-                SELECT 
-                    customer_origin,
-                    customer_destination,
-                    transaction_type,
-                    amount
-                FROM transactions
-                WHERE id = %s
-                """,
-                (transaction_id,)
-            )
-            return result
-        except Exception as e:
-            logging.error("Erro ao consultar transação por ID: %s", e)
-            raise
-        
-    @staticmethod
-    def list_transactions_by_customer(customer_id: int):
-        try:
-            return DatabaseAdapter.fetchalldict(
-                """
-                SELECT
-                    customer_origin,
-                    customer_destination,
-                    transaction_type,
-                    amount
-                    FROM transactions
-                    WHERE customer_origin = %s
-                    OR customer_destination = %s
-                    ORDER BY transaction_date DESC
-                    """,
-                    (customer_id, customer_id)
-            )
-        except Exception as e:
-           logging.exception("Erro ao listar transações do customer: %s", e)
-           raise
+    async def create_transaction(
+        self,
+        transaction_data: TransactionCreate
+    ):
+        pass
+    
+    async def get_transaction_by_id(
+        self,
+        transaction_id: UUID
+    ):
+        pass
+    
+    async def list_transactions(self):
+        pass
+    
+    async def list_transactions_by_account(
+        self,
+        account_id: UUID
+    ):
+        pass
+    
+    async def delete_transaction(
+        self,
+        transaction_id: UUID
+    ):
+        pass

@@ -14,6 +14,14 @@ class CustomerCreate(BaseModel):
          "HIGH"
     ] = "LOW"
     
+class CustomerUpdate(BaseModel):
+    manager_id: UUID | None = None
+    risk_profile: Literal[
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+    ] | None = None
+    
 class CustomerResponse(BaseModel):
 
     person_id: UUID
