@@ -5,7 +5,8 @@ from pydantic import (
     BaseModel,
     EmailStr, 
     Field, 
-    field_validator
+    field_validator,
+    ConfigDict
 )
 
 
@@ -47,5 +48,55 @@ class PersonCreate(BaseModel):
 
         return "".join(str(d) for d in digits)
     
+class PersonUpdate(BaseModel):
+    full_name: str | None = Field(
+        default=None,
+        min_length=2,
+        max_length=150
+    )
+    
+    birth_date: date | None = None
+    cpf: str | None = Field(
+        default=None,
+        pattern=r'^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$'
+    )
+    
+    email: EmailStr | None = None
+    phone: str | None = None
+    
+    sex: str | None = Field(
+        default=None,
+        pattern=r"^[MFO]$"
+    )
+    
+    @field_validator("cpf")
+    @classmethod
+    def validate_cpf_digits(cls, v):
+        if v is None:
+            return v
+
+        digits = [int(digit) for digit in v if digit.isdigit()]
+
+        if len(digits) != 11 or len(set(digits)) == 1:
+            raise ValueError("CPF inválido")
+
+        sum_first = sum(digits[i] * (10 - i) for i in range(9))
+        digit_1 = (sum_first * 10 % 11) % 10
+
+        if digits[9] != digit_1:
+            raise ValueError("CPF inválido")
+
+        sum_second = sum(digits[i] * (11 - i) for i in range(10))
+        digit_2 = (sum_second * 10 % 11) % 10
+
+        if digits[10] != digit_2:
+            raise ValueError("CPF inválido")
+
+        return "".join(str(d) for d in digits)
+    
 class PersonResponse(PersonCreate):
     person_id: UUID
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )
